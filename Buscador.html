@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#buscar").on("click", function () {
+                var texto = "";
+                var tag = $("#txtbuscador").val();
+                $("#imagenes").text("Cargando...");
+                $.getJSON("https://api.flickr.com/services/feeds/photos_public.gne?tags=" + tag
+                    + "&tagmode=any&format=json&jsoncallback=?", function (datos) {
+                        $.each(datos.items, function (i, item) {
+                            texto += "<div class='cuadro'>";
+                            texto += "<h2>" + item.title + "</h2>";
+                            texto += "<div>" + item.description + "</div>";
+                            texto += "</div>";
+                        });
+                        $("#imagenes").html(texto);
+                    });
+            });
+        });
+    </script>
+    <style>
+        .cuadro {
+            display: inline-block;
+            vertical-align: top;
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="txtbuscador">
+    <input type="button" id="buscar" value="Buscar">
+    <div id="imagenes"></div>
+</body>
+</html>
